@@ -146,3 +146,155 @@ default_data['active_key'] = sys_config["vector_dim"]
 
 print(f"\nExisting Key Value: {default_data['active_key']}")
 print(f"Missing Key Value (Auto-generated): {default_data['unknown_key_1']}")
+# Appendix IX - Exercise 2: Student Performance Data Analyzer
+# Student: Ladica | ID: TUPM-26-1844
+
+# Student parameters
+LAST_NAME = "Ladica"
+STUDENT_ID = "TUPM-26-1844"
+FAVORITE_ARTIST = "ALEC BENJAMIN"
+
+# Calculate SEED_NUM from student ID digit sum
+SEED_NUM = sum(int(d) for d in STUDENT_ID if d.isdigit())
+
+# 1. Generate 5 student IDs using LAST_NAME with digits 1..5
+student_ids = [f"{LAST_NAME}_{i}" for i in range(1, 6)]
+
+# 2. Derive raw scores using character codes of FAVORITE_ARTIST
+artist_vals = [ord(char) % 40 + 60 for char in FAVORITE_ARTIST if char.isalpha()]
+
+# 3. Create raw performance dataset (including 1 duplicate and multi-subject records)
+raw_performance_data = [
+    (student_ids[0], "MATH", artist_vals[0]),
+    (student_ids[1], "SCIENCE", artist_vals[1]),
+    (student_ids[2], "ENGLISH", artist_vals[2]),
+    (student_ids[3], "HISTORY", artist_vals[3]),
+    (student_ids[4], "PROGRAMMING", artist_vals[4]),
+    (student_ids[0], "MATH", artist_vals[0]),       # Repeated record
+    (student_ids[0], "SCIENCE", artist_vals[5]),    # Multiple subject 1
+    (student_ids[1], "ENGLISH", artist_vals[6])     # Multiple subject 2
+]
+
+print("=== 1. RAW PERFORMANCE DATA ===")
+for record in raw_performance_data:
+    print(record)
+
+# 4. Filter and De-duplicate Data using Sets
+distinct_records = list(set(raw_performance_data))
+duplicate_records = list(set([r for r in raw_performance_data if raw_performance_data.count(r) > 1]))
+
+print("\n=== 2. DUPLICATE RECORDS REJECTED ===")
+for dup in duplicate_records:
+    print(dup)
+
+print("\n=== 3. DISTINCT RECORDS ===")
+for dist in distinct_records:
+    print(dist)
+
+# 5. Organize into Student Profiles via Dictionaries
+student_profiles = {}
+for student_id, subject, score in distinct_records:
+    if student_id not in student_profiles:
+        student_profiles[student_id] = {}
+    student_profiles[student_id][subject] = score
+
+print("\n=== 4. ORGANIZED STUDENT PROFILES ===")
+for sid, profile in student_profiles.items():
+    print(f"{sid}: {profile}")
+
+# 6. Statistical Analysis
+all_scores = [score for _, _, score in distinct_records]
+print("\n=== 5. PERFORMANCE STATISTICAL SUMMARY ===")
+print(f"Total Evaluated Records: {len(all_scores)}")
+print(f"Highest Score: {max(all_scores)}")
+print(f"Lowest Score: {min(all_scores)}")
+print(f"Class Average: {sum(all_scores) / len(all_scores):.2f}")
+
+# Categorize performance into High/Average/Low
+high_performers = [s for s in distinct_records if s[2] >= 85]
+average_performers = [s for s in distinct_records if 70 <= s[2] < 85]
+low_performers = [s for s in distinct_records if s[2] < 70]
+
+print(f"\nHigh Performers (>=85): {len(high_performers)}")
+print(f"Average Performers (70-84): {len(average_performers)}")
+print(f"Low Performers (<70): {len(low_performers)}")
+
+# 7. Ordered Results
+sorted_records = sorted(distinct_records, key=lambda x: (x[0], x[1]))
+print("\n=== 6. ORDERED PERFORMANCE RESULTS ===")
+for r in sorted_records:
+    print(f"Student: {r[0]} | Subject: {r[1]} | Score: {r[2]}")
+    # Appendix IX - Exercise 3: Transaction History Analyzer
+# Student: Ladica | ID: TUPM-26-1844
+
+LAST_NAME = "Ladica"
+STUDENT_ID = "TUPM-26-1844"
+FAVORITE_ARTIST = "ALEC BENJAMIN"
+
+# Calculate SEED_NUM from student ID digit sum
+SEED_NUM = sum(int(d) for d in STUDENT_ID if d.isdigit())
+
+# 1. Generate 5 customer IDs using LAST_NAME with C1..C5
+customer_ids = [f"{LAST_NAME}_C{i}" for i in range(1, 6)]
+
+# 2. Common product categories
+categories = ["ELECTRONICS", "BOOKS", "CLOTHING", "HOME", "BEAUTY"]
+
+# 3. Derive transaction values using character codes of FAVORITE_ARTIST
+artist_vals = [ord(char) * 2 + SEED_NUM for char in FAVORITE_ARTIST if char.isalpha()]
+
+# 4. Create raw transaction history (including 1 repeated record & multi-purchases)
+raw_transactions = [
+    (customer_ids[0], categories[0], artist_vals[0]),
+    (customer_ids[1], categories[1], artist_vals[1]),
+    (customer_ids[2], categories[2], artist_vals[2]),
+    (customer_ids[3], categories[3], artist_vals[3]),
+    (customer_ids[4], categories[4], artist_vals[4]),
+    (customer_ids[0], categories[0], artist_vals[0]),   # Repeated transaction
+    (customer_ids[0], categories[1], artist_vals[5]),   # Multiple purchase 1
+    (customer_ids[1], categories[0], artist_vals[6])    # Multiple purchase 2
+]
+
+print("=== 1. RAW TRANSACTION HISTORY ===")
+for t in raw_transactions:
+    print(t)
+
+# 5. Filter and De-duplicate Data using Sets
+distinct_transactions = list(set(raw_transactions))
+duplicate_transactions = list(set([t for t in raw_transactions if raw_transactions.count(t) > 1]))
+
+print("\n=== 2. REJECTED DUPLICATE TRANSACTIONS ===")
+for dup in duplicate_transactions:
+    print(dup)
+
+print("\n=== 3. DISTINCT TRANSACTIONS ===")
+for dist in distinct_transactions:
+    print(dist)
+
+# 6. Organize Transactions by Customer Profiles via Dictionaries
+customer_profiles = {}
+for cid, cat, amount in distinct_transactions:
+    if cid not in customer_profiles:
+        customer_profiles[cid] = {}
+    if cat not in customer_profiles[cid]:
+        customer_profiles[cid][cat] = []
+    customer_profiles[cid][cat].append(amount)
+
+print("\n=== 4. ORGANIZED CUSTOMER PROFILES ===")
+for cid, profile in customer_profiles.items():
+    print(f"{cid}: {profile}")
+
+# 7. Financial & Category Summaries
+all_amounts = [amount for _, _, amount in distinct_transactions]
+print("\n=== 5. TRANSACTION FINANCIAL SUMMARY ===")
+print(f"Total Transactions Processed: {len(all_amounts)}")
+print(f"Total Revenue: ${sum(all_amounts):.2f}")
+print(f"Minimum Transaction: ${min(all_amounts):.2f}")
+print(f"Maximum Transaction: ${max(all_amounts):.2f}")
+print(f"Average Transaction: ${sum(all_amounts) / len(all_amounts):.2f}")
+
+# 8. Ordered Transaction Logs
+sorted_transactions = sorted(distinct_transactions, key=lambda x: (x[0], x[1]))
+print("\n=== 6. ORDERED TRANSACTION LOGS ===")
+for st in sorted_transactions:
+    print(f"Customer: {st[0]} | Category: {st[1]} | Amount: ${st[2]:.2f}")
